@@ -7,7 +7,6 @@ const { localVue } = initLocalVue();
 describe('App component', () => {
     it('should render properly', () => {
         const wrapper = shallowMount(App, { localVue });
-        console.warn(wrapper.html());
         expect(wrapper.exists()).toBe(true);
     });
 });
