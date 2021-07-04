@@ -1,50 +1,52 @@
+<!-- TODO:
+    - Implement error handling (Components and store), and tests
+    - Define default values for dependant computed property, and tests
+    - Implement design from Figma by Overwriting vuetify style and creating a global one
+-->
+
 <template>
-    <v-app>
-        <v-app-bar app color="primary" dark>
-            <div class="d-flex align-center">
-                <v-img
-                    alt="Vuetify Logo"
-                    class="shrink mr-2"
-                    contain
-                    src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-                    transition="scale-transition"
-                    width="40"
-                />
-
-                <v-img
-                    alt="Vuetify Name"
-                    class="shrink mt-1 hidden-sm-and-down"
-                    contain
-                    min-width="100"
-                    src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-                    width="100"
-                />
-            </div>
-
-            <v-spacer></v-spacer>
-
-            <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-                <span class="mr-2">Latest Release</span>
-                <v-icon>mdi-open-in-new</v-icon>
-            </v-btn>
-        </v-app-bar>
-
+    <v-app id="acquire-checkout-page">
+        <Header />
         <v-main>
-            <HelloWorld />
+            <v-container>
+                <v-row>
+                    <Products />
+                    <Cart />
+                </v-row>
+            </v-container>
         </v-main>
     </v-app>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld/index.vue';
+import { mapActions } from 'vuex';
+
+import Header from '@/components/Header/Header.vue';
+import Products from '@/components/Products/Products.vue';
+import Cart from '@/components/Cart/Cart.vue';
 
 export default {
     name: 'App',
     components: {
-        HelloWorld
+        Header,
+        Products,
+        Cart
     },
-    data: () => ({
-        //
-    })
+    async created() {
+        // Usually this kind of operation would go in a route guard,
+        // so the products are loaded in store before the route itself
+        await this.loadProducts();
+    },
+    methods: {
+        ...mapActions('products', ['loadProducts'])
+    }
 };
 </script>
+
+<style lang="scss">
+#acquire-checkout-page {
+    main {
+        margin-top: -118px;
+    }
+}
+</style>
