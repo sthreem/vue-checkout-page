@@ -2,7 +2,7 @@
 <template>
     <header id="acquire-checkout-header">
         <v-container>
-            <span>
+            <span id="header-seller-info">
                 <!-- TODO: Find a way to download the logo without background from Figma -->
                 <v-img
                     src="@/assets/seller-logo.png"
@@ -15,7 +15,7 @@
                     <v-icon small>mdi-arrow-right</v-icon>
                 </a>
             </span>
-            <span>
+            <span id="header-bundle-info">
                 <h1 id="seller-bundle-name">{{ bundleName }}</h1>
                 <h2 id="seller-bundle-description">{{ bundleDescription }}</h2>
             </span>
@@ -53,5 +53,36 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    #header-seller-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 60px;
+
+        a {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+            text-decoration: none;
+            color: #1f3447;
+        }
+    }
+
+    #header-bundle-info {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+
+        #seller-bundle-name {
+            font-size: 64px;
+            line-height: 75px;
+            margin-bottom: 16px;
+        }
+
+        #seller-bundle-description {
+            font-size: 16px;
+        }
+    }
 }
 </style>

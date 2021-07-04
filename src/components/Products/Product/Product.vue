@@ -11,25 +11,31 @@
                     ></v-img>
                 </v-col>
                 <v-col cols="8">
-                    <span>
+                    <span class="card-header">
                         <h1 class="product-name">{{ product.name }}</h1>
                         <h2 class="variant-price">$ {{ selectedVariant.price }}</h2>
                     </span>
                     <p class="product-description">{{ product.description }}</p>
                     <v-radio-group
+                        class="product-attributes"
                         v-for="(attribute, idx) in attributes"
                         :key="`${attribute.name}-${idx}`"
                         v-model="formData[attribute.name]"
+                        dense
                         row
+                        hide-details="true"
                     >
-                        <v-radio
-                            v-for="(value, idx) in attribute.values"
-                            :key="`${value}-${idx}`"
-                            :label="value"
-                            :value="value"
-                        ></v-radio>
+                        <p>{{ attribute.name }}</p>
+                        <span class="d-flex">
+                            <v-radio
+                                v-for="(value, idx) in attribute.values"
+                                :key="`${value}-${idx}`"
+                                :label="value"
+                                :value="value"
+                            ></v-radio>
+                        </span>
                     </v-radio-group>
-                    <v-card-actions>
+                    <v-card-actions class="product-actions">
                         <v-btn color="primary" @click="addToCart">Add to cart</v-btn>
                     </v-card-actions>
                 </v-col>
@@ -148,5 +154,47 @@ export default {
 <style lang="scss">
 .acquire-checkout-product {
     margin-bottom: 1rem;
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .product-name {
+            font-size: 18px;
+            line-height: 20px;
+        }
+
+        .variant-price {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+
+    .product-description {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .product-attributes {
+        margin-top: 0;
+
+        p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 400;
+        }
+
+        .v-input--radio-group__input {
+            justify-content: space-between;
+        }
+    }
+
+    .product-actions {
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
 }
 </style>

@@ -7,7 +7,13 @@
                         <h1 id="cart-title">Welcome back Sarah !</h1>
                         <h2 id="cart-greeting">Nice to see you again !</h2>
                         <v-card-actions>
-                            <v-btn block color="primary" large :disabled="cartTotal === 0">
+                            <v-btn
+                                id="cart-pay-button"
+                                block
+                                color="primary"
+                                large
+                                :disabled="cartTotal === 0"
+                            >
                                 <v-icon small>mdi-lock</v-icon>
                                 Pay $ {{ cartTotal }}
                             </v-btn>
@@ -48,5 +54,27 @@ export default {
 <!-- Style -->
 <style lang="scss">
 #acquire-checkout-cart {
+    #cart-title {
+        font-size: 18px;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    #cart-greeting {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #cart-pay-button {
+        margin-bottom: 50px;
+    }
+
+    #cart-description {
+        font-size: 18px;
+        line-height: 24px;
+    }
 }
 </style>

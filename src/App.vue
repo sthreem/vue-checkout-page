@@ -46,7 +46,7 @@ export default {
 <style lang="scss">
 #acquire-checkout-page {
     main {
-        margin-top: -118px;
+        margin-top: -130px;
     }
 }
 </style>
