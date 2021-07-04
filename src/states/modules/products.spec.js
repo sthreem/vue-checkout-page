@@ -36,6 +36,27 @@ describe('products state module', () => {
         });
     });
 
+    describe('getProduct getter', () => {
+        let productid;
+
+        beforeEach(() => {
+            productid = products[0].id;
+        });
+
+        it('should return product with matching id', () => {
+            store.commit('products/SET_PRODUCTS', products);
+
+            expect(store.getters['products/getProduct'](productid)).toEqual(
+                store.state.products.products[0]
+            );
+        });
+
+        it('should return null if no product with matching id', () => {
+            expect(store.state.products.products[0]).toBeUndefined();
+            expect(store.getters['products/getProduct'](productid)).toEqual(null);
+        });
+    });
+
     describe('getAllProductVariants getter', () => {
         let productid;
 
@@ -44,7 +65,7 @@ describe('products state module', () => {
         });
 
         it('should return variants for matching productid', () => {
-            store.commit('products/SET_PRODUCTS', { products });
+            store.commit('products/SET_PRODUCTS', products);
 
             expect(store.state.products.variants[productid]).toEqual(products[0].variants);
             expect(store.getters['products/getAllProductVariants'](productid)).toEqual(
@@ -68,7 +89,7 @@ describe('products state module', () => {
         });
 
         it('should return single variant for matching productid and variantid', () => {
-            store.commit('products/SET_PRODUCTS', { products });
+            store.commit('products/SET_PRODUCTS', products);
 
             expect(store.state.products.variants[productid][0]).toEqual(products[0].variants[0]);
             expect(store.getters['products/getSingleProductVariant'](productid, variantid)).toEqual(
@@ -89,7 +110,7 @@ describe('products state module', () => {
         });
 
         it('should return true if there is at least one product', () => {
-            store.commit('products/SET_PRODUCTS', { products: [products[0]] });
+            store.commit('products/SET_PRODUCTS', [products[0]]);
 
             expect(store.getters['products/isProductsLoaded']).toEqual(true);
         });
@@ -104,7 +125,7 @@ describe('products state module', () => {
         });
 
         it('should not fetch products if already loaded', async () => {
-            store.commit('products/SET_PRODUCTS', { products });
+            store.commit('products/SET_PRODUCTS', products);
 
             await store.dispatch('products/loadProducts');
 
@@ -123,26 +144,21 @@ describe('products state module', () => {
             await store.dispatch('products/loadProducts');
 
             expect(store.commit).toHaveBeenCalled();
-            expect(store.commit).toHaveBeenCalledWith(
-                'products/SET_PRODUCTS',
-                {
-                    products: products
-                },
-                undefined
-            );
+            // TODO: Check why there is a third undefined argument and fix test
+            expect(store.commit).toHaveBeenCalledWith('products/SET_PRODUCTS', products, undefined);
         });
     });
 
     describe('SET_PRODUCTS mutation', () => {
         it('should remove variants from products in state', () => {
-            store.commit('products/SET_PRODUCTS', { products });
+            store.commit('products/SET_PRODUCTS', products);
 
             expect(store.state.products.products[0].variants).toBeUndefined();
             expect(store.state.products.products[1].variants).toBeUndefined();
         });
 
         it('should set separately products and variants in state', () => {
-            store.commit('products/SET_PRODUCTS', { products });
+            store.commit('products/SET_PRODUCTS', products);
 
             const expectedProducts = [{ id: 'product1' }, { id: 'product2' }];
             const expectedVariants = {

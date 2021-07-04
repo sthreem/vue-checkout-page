@@ -1,45 +1,39 @@
 const initialState = () => ({
-    /*
-        {
-            productid: 'id',
-            variantid: 'id',
-            price: 0,
-            quantity: 0
-        }
-    */
     cartItems: []
 });
 
 const state = initialState();
 
 const getters = {
-    getCartTotal: state =>
-        state.cartItems.reduce((acc, item) => item.price * item.quantity + acc, 0)
+    cartTotal: state =>
+        state.cartItems.reduce((acc, item) => Number(item.price) * item.quantity + acc, 0)
 };
 
 const actions = {};
 
 const mutations = {
-    ADD_ITEM_TO_CART(state, { item }) {
-        const { productid, variantid } = item;
+    /*
+        Since the logic is too simple and simillar for adding and removing an item in this
+        test, those two mutations have been merged into one, with a param indicating if
+        we are adding or removing items, and conditional application of the needed logic.
+    */
+    MODIFY_CART(state, { productid, variantid, price = 0, increase = true }) {
         // Get index of item and check if variant of this product already in cart
         const itemIndex = state.cartItems.findIndex(
             item => item.productid === productid && item.variantid === variantid
         );
 
-        // If already in cart, increase quantity. Otherwise, add it.
-        itemIndex >= 0 ? state.cartItems[itemIndex].quantity++ : state.cartItems.push(item);
-    },
+        // When adding an item, if already in cart, increase quantity.
+        // Otherwise, add it to cart.
+        if (increase) {
+            return itemIndex >= 0
+                ? state.cartItems[itemIndex].quantity++
+                : state.cartItems.push({ productid, variantid, price, quantity: 1 });
+        }
 
-    REMOVE_ITEM_FROM_CART(state, { productid, variantid }) {
-        // Get index of item already in cart.
-        const itemIndex = state.cartItems.findIndex(
-            item => item.productid === productid && item.variantid === variantid
-        );
-
-        // If more than one of this product variant in cart, decrease quantity.
-        // Otherwise, remove it.
-        state.cartItems[itemIndex].quantity > 1
+        // When removing an item, if more than one of this product variant is in cart,
+        // decrease quantity. Otherwise, remove it from cart.
+        return state.cartItems[itemIndex].quantity > 1
             ? state.cartItems[itemIndex].quantity--
             : state.cartItems.splice(itemIndex, 1);
     }
